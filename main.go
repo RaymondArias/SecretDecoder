@@ -58,8 +58,8 @@ func homeDir() string {
 	return os.Getenv("USERPROFILE") // windows
 }
 
+// Get the secret based on its name and namespace
 func getSecret(secretName string, namespace string, kubeconfig *string){
-
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
@@ -73,20 +73,22 @@ func getSecret(secretName string, namespace string, kubeconfig *string){
 	}
 	result, err := clientset.CoreV1().Secrets(namespace).Get(secretName, metav1.GetOptions{})
 	if errors.IsNotFound(err) {
-		fmt.Printf("Pod %s in namespace %s not found\n", secretName, namespace)
+		fmt.Printf("Secret %s in namespace %s not found\n", secretName, namespace)
 	} else if statusError, isStatus := err.(*errors.StatusError); isStatus {
-		fmt.Printf("Error getting pod %s in namespace %s: %v\n",
+		fmt.Printf("Error getting secret %s in namespace %s: %v\n",
 			secretName, namespace, statusError.ErrStatus.Message)
 	} else if err != nil {
 		panic(err.Error())
 	} else {
+		// Get the data map in the secret object
 		secretData := result.Data
 		loopDataMap(secretData)
 	}
 
 }
+// Print the data from secret
 func loopDataMap(secretData map[string][]byte){
-		for k, v := range secretData {
+	for k, v := range secretData {
 	    fmt.Printf("%s: %s\n", k, v)
 	}
 }
