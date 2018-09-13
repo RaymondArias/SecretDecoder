@@ -30,15 +30,15 @@ import (
 	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
 	// _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 )
+
 // Decodes secrets based on the name and namespaced
 func main() {
 	var namespace string
 	var secretName string
-  flag.StringVar(&namespace, "n", "default", "defaults=default.")
+	flag.StringVar(&namespace, "n", "default", "defaults=default.")
 	flag.StringVar(&secretName, "s", "default", "defaults=default.")
-  flag.Parse()
-
-  fmt.Printf("namespace = %s\n", namespace)
+	flag.Parse()
+	fmt.Printf("namespace = %s\n", namespace)
 	fmt.Printf("secret name = %s\n", secretName)
 
 	var kubeconfig *string
@@ -59,7 +59,7 @@ func homeDir() string {
 }
 
 // Get the secret based on its name and namespace
-func getSecret(secretName string, namespace string, kubeconfig *string){
+func getSecret(secretName string, namespace string, kubeconfig *string) {
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
@@ -86,9 +86,10 @@ func getSecret(secretName string, namespace string, kubeconfig *string){
 	}
 
 }
+
 // Print the data from secret
-func loopDataMap(secretData map[string][]byte){
+func loopDataMap(secretData map[string][]byte) {
 	for k, v := range secretData {
-	    fmt.Printf("%s: %s\n", k, v)
+		fmt.Printf("%s: %s\n", k, v)
 	}
 }
