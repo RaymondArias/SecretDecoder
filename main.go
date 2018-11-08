@@ -29,7 +29,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
 	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
-	// _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
+        _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 )
 
 // Decodes secrets based on the name and namespaced

@@ -1,6 +1,11 @@
-hash: 06bb77ca0d6e58b71cad941a5390322c16b5eaebc5c43341b75da303b370fb45
-updated: 2018-09-13T16:30:52.519508298-07:00
+hash: 59a858149eef9853ff19e4454819aa5c9529471fe6233a90fc1f0ddec2dcd0c1
+updated: 2018-10-02T09:48:37.609327153-07:00
 imports:
+- name: cloud.google.com/go
+  version: 3b1ae45394a234c385be014e9a488f2bb6eef821
+  subpackages:
+  - compute/metadata
+  - internal
 - name: github.com/emicklei/go-restful
   version: ff4f55a206334ef123e4f79bbf348980da81ca46
   subpackages:
@@ -74,6 +79,7 @@ imports:
   version: 1c05540f6879653db88113bc4a2b70aec4bd491f
   subpackages:
   - context
+  - context/ctxhttp
   - html
   - html/atom
   - http2
@@ -84,7 +90,10 @@ imports:
 - name: golang.org/x/oauth2
   version: a6bd8cefa1811bd24b86f8902872e4e8225f74c4
   subpackages:
+  - google
   - internal
+  - jws
+  - jwt
 - name: golang.org/x/sys
   version: 95c6576299259db960f6c5b9b69ea52422860fce
   subpackages:
@@ -105,12 +114,14 @@ imports:
   - unicode/norm
   - width
 - name: google.golang.org/appengine
-  version: 03cac3b07182cfb08c0d0c0b6ee72a1ceb151c92
+  version: ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06
   subpackages:
   - internal
+  - internal/app_identity
   - internal/base
   - internal/datastore
   - internal/log
+  - internal/modules
   - internal/remote_api
   - internal/urlfetch
   - urlfetch
@@ -223,9 +234,11 @@ imports:
   - kubernetes/typed/storage/v1alpha1
   - kubernetes/typed/storage/v1beta1
   - pkg/version
+  - plugin/pkg/client/auth/gcp
   - plugin/pkg/client/auth/oidc
   - rest
   - rest/watch
+  - third_party/forked/golang/template
   - tools/auth
   - tools/clientcmd
   - tools/clientcmd/api
@@ -238,6 +251,7 @@ imports:
   - util/flowcontrol
   - util/homedir
   - util/integer
+  - util/jsonpath
 - name: k8s.io/kube-openapi
   version: 39a7bf85c140f972372c2a0d1ee40adbf0c8bfe1
   subpackages:
