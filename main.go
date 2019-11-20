@@ -23,21 +23,21 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/kubernetes-sigs/aws-iam-authenticator/pkg/token"
+
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/tools/clientcmd"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
-	// Uncomment the following line to load the gcp plugin (only required to authenticate against GKE clusters).
-        _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 )
 
 // Decodes secrets based on the name and namespaced
 func main() {
 	var namespace string
 	var secretName string
-	flag.StringVar(&namespace, "n", "default", "defaults=default.")
-	flag.StringVar(&secretName, "s", "default", "defaults=default.")
+	flag.StringVar(&namespace, "n", "default", "namespace secret is in")
+	flag.StringVar(&secretName, "s", "default", "secret name")
 	flag.Parse()
 	fmt.Printf("namespace = %s\n", namespace)
 	fmt.Printf("secret name = %s\n", secretName)
@@ -66,7 +66,11 @@ func getSecret(secretName string, namespace string, kubeconfig *string) {
 	if err != nil {
 		panic(err.Error())
 	}
-
+	token, err := getSessionToken(config.Host)
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Println(token.Token)
 	// create the clientset
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
@@ -94,3 +98,13 @@ func loopDataMap(secretData map[string][]byte) {
 		fmt.Printf("%s: %s\n", k, v)
 	}
 }
+
+func getSessionToken(host string) (*token.Token, error) {
+	tokenGen, err := token.NewGenerator(true, true)
+
+	if err != nil {
+		return nil, err
+	}
+	token, err := tokenGen.Get(host)
+	return &token, err
+
