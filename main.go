@@ -66,7 +66,6 @@ func getSecret(secretName string, namespace string, kubeconfig *string) {
 	if err != nil {
 		panic(err.Error())
 	}
-	token, err := getSessionToken(config.Host)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -98,13 +97,3 @@ func loopDataMap(secretData map[string][]byte) {
 		fmt.Printf("%s: %s\n", k, v)
 	}
 }
-
-func getSessionToken(host string) (*token.Token, error) {
-	tokenGen, err := token.NewGenerator(true, true)
-
-	if err != nil {
-		return nil, err
-	}
-	token, err := tokenGen.Get(host)
-	return &token, err
-
