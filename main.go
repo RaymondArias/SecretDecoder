@@ -70,6 +70,7 @@ func getSecret(secretName string, namespace string, kubeconfig *string) {
 	if err != nil {
 		panic(err.Error())
 	}
+
 	result, err := clientset.CoreV1().Secrets(namespace).Get(secretName, metav1.GetOptions{})
 	if errors.IsNotFound(err) {
 		fmt.Printf("Secret %s in namespace %s not found\n", secretName, namespace)
