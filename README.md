@@ -35,7 +35,7 @@ metadata:
 type: Opaque
 
 # secret-decoder prints out base64 decoded string
-secret-decoder -s super-secret-stuff -n default
+./secret-decoder -s super-secret-stuff -n default
 namespace = default
 secret name = super-secret-stuff
 password: secure-password
