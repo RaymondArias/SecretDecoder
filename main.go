@@ -23,8 +23,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/kubernetes-sigs/aws-iam-authenticator/pkg/token"
-
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -66,15 +64,13 @@ func getSecret(secretName string, namespace string, kubeconfig *string) {
 	if err != nil {
 		panic(err.Error())
 	}
-	if err != nil {
-		panic(err.Error())
-	}
-	fmt.Println(token.Token)
+
 	// create the clientset
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err.Error())
 	}
+
 	result, err := clientset.CoreV1().Secrets(namespace).Get(secretName, metav1.GetOptions{})
 	if errors.IsNotFound(err) {
 		fmt.Printf("Secret %s in namespace %s not found\n", secretName, namespace)
